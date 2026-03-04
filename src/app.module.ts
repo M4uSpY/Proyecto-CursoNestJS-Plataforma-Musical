@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ArtistsModule } from './artists/artists.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CancionesModule } from './canciones/canciones.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       },
     }),
     ArtistsModule,
+    CancionesModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

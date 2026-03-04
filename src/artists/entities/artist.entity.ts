@@ -1,5 +1,6 @@
 import { Role } from 'src/auth/enums/rol.enum';
-import { Column, Entity } from 'typeorm';
+import { Cancion } from 'src/canciones/entities/cancion.entity';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
 export class Artist {
@@ -26,4 +27,8 @@ export class Artist {
 
   @Column({ nullable: false })
   password: string;
+
+  // 1:Artista --> N:Canciones
+  @OneToMany(() => Cancion, (cancion) => cancion.artista)
+  canciones: Cancion[];
 }

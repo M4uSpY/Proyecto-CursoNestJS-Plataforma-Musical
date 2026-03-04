@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,22 +17,45 @@ export class ArtistsService {
   }
 
   async findAll() {
-    return await this.artistRepository.find();
+    return await this.artistRepository.find({
+      relations: ['canciones'],
+    });
   }
 
   async findOne(id: number) {
-    return await this.artistRepository.findOneBy({ id });
+    const artista = await this.artistRepository.findOne({
+      where: { id },
+      relations: ['canciones'],
+    });
+    if (!artista) {
+      throw new NotFoundException(`Artista con id ${id} no encontrado`);
+    }
+    return artista;
+  }
+
+  async findByName(nombre: string) {
+    const artista = await this.artistRepository.findOneBy({ nombre });
+    if (!artista) {
+      throw new NotFoundException(`Artista con nombre ${nombre} no encontrado`);
+    }
+    return artista;
   }
 
   async update(id: number, updateArtistDto: UpdateArtistDto) {
-    await this.artistRepository.update(id, updateArtistDto);
-    return this.findOne(id);
+    const artista = await this.findOne(id);
+    this.artistRepository.update(artista, updateArtistDto);
+    return await this.artistRepository.save(artista);
   }
 
   async remove(id: number) {
-    await this.artistRepository.delete(id);
-    return {
-      message: `Artista con el id ${id} ha sido eliminado correctamente`,
-    };
+    const result = await this.artistRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Artista con id ${id} no encontrado`);
+    }
+    return { message: `Artista con id ${id} eliminado correctamente` };
+  }
+
+  async findOneByEmail(email: string) {
+    return await this.artistRepository.findOneBy({ email });
   }
 }

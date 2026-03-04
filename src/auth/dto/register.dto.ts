@@ -1,7 +1,7 @@
 import { IsEmail, IsEnum, IsNumber, IsString } from 'class-validator';
-import { Role } from 'src/auth/enums/rol.enum';
+import { Role } from '../enums/rol.enum';
 
-export class CreateArtistDto {
+export class RegisterDto {
   @IsString()
   nombre: string;
 

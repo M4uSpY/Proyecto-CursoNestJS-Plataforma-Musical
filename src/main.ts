@@ -25,12 +25,11 @@ async function bootstrap() {
     .setTitle('Plataforma Musical')
     .setDescription('Plataforma de artistas y canciones.')
     .setVersion('1.0')
-    // .addBearerAuth()
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
-
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
