@@ -17,7 +17,10 @@ import { Auth } from 'src/auth/decorator/auth.decorator';
 import { Role } from 'src/auth/enums/rol.enum';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { UpdateCancioneDto } from './dto/update-cancion.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('Endpoints - Canciones')
 @Controller('canciones')
 export class CancionesController {
   constructor(private readonly cancionesService: CancionesService) {}

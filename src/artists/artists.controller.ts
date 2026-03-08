@@ -17,7 +17,10 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Auth } from 'src/auth/decorator/auth.decorator';
 import { Role } from 'src/auth/enums/rol.enum';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('Endpoints - Artistas')
 @Controller('artistas')
 export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
