@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Put,
+  Req,
 } from '@nestjs/common';
 import { CancionesService } from './canciones.service';
 import { CreateCancionDto } from './dto/create-cancion.dto';
@@ -24,8 +25,8 @@ export class CancionesController {
   @UseGuards(AuthGuard, RolesGuard)
   @Auth(Role.ARTISTA)
   @Post()
-  create(@Body() createCancionDto: CreateCancionDto) {
-    return this.cancionesService.create(createCancionDto);
+  create(@Body() createCancionDto: CreateCancionDto, @Req() req) {
+    return this.cancionesService.create(createCancionDto, req.user.email);
   }
 
   @UseGuards(AuthGuard, RolesGuard)
@@ -33,13 +34,6 @@ export class CancionesController {
   @Get()
   findAll() {
     return this.cancionesService.findAll();
-  }
-
-  @UseGuards(AuthGuard, RolesGuard)
-  @Auth(Role.ADMIN)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cancionesService.findOne(+id);
   }
 
   @UseGuards(AuthGuard, RolesGuard)

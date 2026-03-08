@@ -58,4 +58,18 @@ export class ArtistsService {
   async findOneByEmail(email: string) {
     return await this.artistRepository.findOneBy({ email });
   }
+
+  // ver las propias canciones
+  async getMisCanciones(email: string) {
+    const artist = await this.artistRepository.findOne({
+      where: { email },
+      relations: ['canciones'],
+    });
+
+    if (!artist) {
+      throw new NotFoundException('Artista no encontrado');
+    }
+
+    return artist.canciones;
+  }
 }

@@ -13,29 +13,21 @@ export class CancionesService {
     private readonly artistaService: ArtistsService,
   ) {}
 
-  async create(createCancionDto: CreateCancionDto) {
-    const artista = await this.artistaService.findByName(
-      createCancionDto.artista,
-    );
+  async create(createCancionDto: CreateCancionDto, email: string) {
+    const artista = await this.artistaService.findOneByEmail(email);
 
+    if (!artista) {
+      throw new NotFoundException('Artista no encontrado');
+    }
     const cancion = this.cancionRepository.create({
       ...createCancionDto,
       artista,
     });
-
     return await this.cancionRepository.save(cancion);
   }
 
   async findAll() {
     return await this.cancionRepository.find();
-  }
-
-  async findOne(id: number) {
-    const cancion = await this.cancionRepository.findOne({ where: { id } });
-    if (!cancion) {
-      throw new NotFoundException(`Cancion con id ${id} no encontrado`);
-    }
-    return cancion;
   }
 
   update(id: number, updateCancioneDto: UpdateCancioneDto) {

@@ -15,7 +15,4 @@ export class CreateCancionDto {
 
   @IsNumber()
   reproducciones: number;
-
-  @IsString()
-  artista: string;
 }

@@ -8,6 +8,7 @@ import {
   Delete,
   Put,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { ArtistsService } from './artists.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
@@ -27,6 +28,14 @@ export class ArtistsController {
   @Get()
   findAll() {
     return this.artistsService.findAll();
+  }
+
+  // OBTENER MIS CANCIONES
+  @UseGuards(AuthGuard, RolesGuard)
+  @Auth(Role.ARTISTA)
+  @Get('mis-canciones')
+  misCanciones(@Req() req) {
+    return this.artistsService.getMisCanciones(req.user.email);
   }
 
   // GET /artistas/:id → Obtener un artista por id

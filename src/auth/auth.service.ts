@@ -17,6 +17,7 @@ export class AuthService {
     pais,
     genero,
     anioDebut,
+    rol,
     email,
     password,
   }: RegisterDto) {
@@ -28,10 +29,7 @@ export class AuthService {
 
     const hashPassword = await bcryptjs.hash(password, 10);
 
-    const roleValue =
-      typeof arguments[0].role === 'string' && arguments[0].role
-        ? arguments[0].role
-        : Role.ARTISTA;
+    const roleValue = rol ? rol : Role.ARTISTA;
 
     await this.artistService.create({
       nombre,
